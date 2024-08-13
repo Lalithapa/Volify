@@ -22,6 +22,7 @@ export default function PageLayout({
   narrowWidth = false,
   title = "",
   showBackButton = false,
+  primaryAction,
 }) {
   const { fullWidthPageLayout, showTitleBar } = appConfig;
   const currentYear = new Date().getFullYear();
@@ -50,6 +51,7 @@ export default function PageLayout({
     <Page
       title={pageTitle}
       backAction={backAction}
+      primaryAction={primaryAction}
       fullWidth={fullWidth ?? fullWidthPageLayout}
       narrowWidth={narrowWidth}
     >
