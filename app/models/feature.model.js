@@ -18,3 +18,5 @@ export const FeatureModel = {
     },
   ],
 };
+
+// List of data types : https://shopify.dev/docs/apps/build/custom-data/metafields/list-of-data-types#supported-types

@@ -1,4 +1,4 @@
-import { Layout, Button } from "@shopify/polaris";
+import { Layout, Button, Card, EmptyState } from "@shopify/polaris";
 import { useLoaderData } from "@remix-run/react";
 import { PageTitleBar } from "../shared/pageTitleBar";
 import PageLayout from "../shared/pageLayout";
@@ -31,10 +31,11 @@ export default function Contents() {
                     content: 'Learn more',
                     url: 'https://help.shopify.com',
                 }}
-                image="https://cdn.shopify.com/b/shopify-guidance-dashboard-public/m66z0a57ues1gygrane8proz6gqn.svgz"
+                image="https://cdn.shopify.com/s/files/1/0579/8749/8059/files/create-content.svg?v=1723585472"
                 >
                 <p>
-                    Create discounts for your products and collections.
+                    Create and manage your contents here. You can add, edit, and delete
+                    contents.
                 </p>
                 </EmptyState>
             </Card>
