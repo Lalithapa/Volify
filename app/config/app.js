@@ -98,27 +98,7 @@ const appConfig = {
         "Custom domain",
         "Custom analytics",
       ],
-    },
-    {
-      name: "Ultimate",
-      id: "ultimate",
-      subheader: "Most popular",
-      amount: 99,
-      currencyCode: "USD",
-      trialDays: 7,
-      interval: BillingInterval.Every30Days,
-      description: "For large business",
-      cta_label: "Start 7-days trial",
-      features: [
-        "Unlimted pages views & visitors",
-        "All features",
-        "Customisation",
-        "Dedicated developer support",
-        "Priority email support",
-        "Custom domain",
-        "Custom analytics",
-      ],
-    },
+    }
   ],
 };
 
