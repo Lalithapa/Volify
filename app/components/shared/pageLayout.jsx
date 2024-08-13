@@ -21,6 +21,7 @@ export default function PageLayout({
   fullWidth,
   narrowWidth = false,
   title = "",
+  subtitle="",
   showBackButton = false,
   primaryAction,
 }) {
@@ -50,6 +51,7 @@ export default function PageLayout({
   return (
     <Page
       title={pageTitle}
+      subtitle={subtitle}
       backAction={backAction}
       primaryAction={primaryAction}
       fullWidth={fullWidth ?? fullWidthPageLayout}

@@ -42,14 +42,12 @@ const ShipReadyTable = ({
 
   if (!data || !data.nodes || data.nodes.length === 0) {
     return (
-      <Card>
-        <Banner status="warning">
+        <Banner tone="info">
           <p>
             No data available or invalid data format. Please provide an array of
             items.
           </p>
         </Banner>
-      </Card>
     );
   }
 
