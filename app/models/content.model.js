@@ -1,3 +1,6 @@
+// Content Model is an example of how you can use 
+// ShipReady metaobjects to create custom data types.
+
 export const ContentModel = {
     name: "Content",
     type: "$app:content",
@@ -13,13 +16,18 @@ export const ContentModel = {
         },
         {
             name: "Content Description",
-            key: "contentDescription",
+            key: "content_description",
             type: "rich_text_field",
         },
         {
             name: "Products reference",
             key: "products_reference",
             type: "list.variant_reference"
+        },
+        {
+            name: "Products json",
+            key: "products_json",
+            type: "json"
         },
         {
             name: "Color",
@@ -32,8 +40,8 @@ export const ContentModel = {
             type: "boolean"
         },
         {
-            name: "createdAt",
-            key: "createdAt",
+            name: "created at",
+            key: "created_at",
             type: "date_time"
         }
 
