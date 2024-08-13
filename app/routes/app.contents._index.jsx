@@ -14,8 +14,23 @@ export const loader = async ({ request }) => {
     return json({
         contentsObject
     });  
-
 };
+
+export async function action({ request }) {
+    const { metaobject } = await authenticateExtra(request);
+    let formData = await request.json();
+
+    if(formData.deleteObject){
+      await metaobject.delete(formData.objectId);
+    }
+
+    return ({
+      status: {
+        success: true,
+        message: "Content deleted successfully",
+      }
+    });
+}
 
 export default function ContentsPage() {
     return <Contents />;
