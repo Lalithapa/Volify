@@ -64,6 +64,7 @@ export default function ShipReadyProductSelector({
             ]
           : [];
       }
+
       return {
         id: product.id,
         title: product.title,
@@ -122,6 +123,7 @@ export default function ShipReadyProductSelector({
                     <Box width="80%">
                       <BlockStack>
                         <Text>{product.title}</Text>
+
                         {product.variants?.length > 0 && (
                           <Text variant="bodyXs" tone="subdued">
                             {`${product.variants?.length} variants`}: (
@@ -139,6 +141,22 @@ export default function ShipReadyProductSelector({
                         )}
                       </BlockStack>
                     </Box>
+                  </InlineStack>
+                </Box>
+
+                <Box width="20%">
+                  <InlineStack align="end" gap="300" wrap={false}>
+                    <Button
+                      variant="plain"
+                      size="slim"
+                      icon={UndoIcon}
+                      onClick={() => {
+                        const temp = products.filter(
+                          (p) => p.id !== product.id,
+                        );
+                        setProducts(temp);
+                      }}
+                    />
                   </InlineStack>
                 </Box>
               </InlineStack>
