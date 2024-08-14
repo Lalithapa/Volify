@@ -40,8 +40,13 @@ export const ContentModel = {
             type: "boolean"
         },
         {
-            name: "created at",
+            name: "Created at",
             key: "created_at",
+            type: "date_time"
+        },
+        {
+            name: "Publish at",
+            key: "publish_at",
             type: "date_time"
         }
 

@@ -15,6 +15,7 @@ import {
   import PageLayout from "../shared/pageLayout";
   import ProductSelectionCard from "../shared/ProductSelectionCard";
   import ColorPickerInput from "../shared/ColorPickerInput";
+  import ShipReadyDate from "../shared/shipReadyDate";
 
   import { Form, useSubmit, useLoaderData } from "@remix-run/react";
   
@@ -27,6 +28,7 @@ import {
     const [description, setDescription] = useState('');
     const [color, setColor] = useState('#000000');
     const [status, setStatus] = useState('draft');
+    const [publishAt, setPublishAt] = useState('');
 
     useEffect(() => {
       if (isEditing && loaderData) {
@@ -79,7 +81,7 @@ import {
                                         label="Description" 
                                         value={description} 
                                         onChange={setDescription} 
-                                        multiline
+                                        multiline={5}
                                     />
                                 </FormLayout>
                             </Card>                       
@@ -99,6 +101,7 @@ import {
                                     onChange={ setStatus }
                                     value={status}
                                 />
+                                <ShipReadyDate date={publishAt} setDate={setPublishAt} label="Publish at" />
                             </BlockStack>
                         </Card>
                     </Layout.Section>

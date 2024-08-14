@@ -26,7 +26,7 @@ export default function Contents() {
             <Card>
                 <EmptyState
                 heading="Manage your contents"
-                action={{content: 'Add content', url: '/app/discounts/new'}}
+                action={{content: 'Add content', url: '/app/contents/new'}}
                 secondaryAction={{
                     content: 'Learn more',
                     url: 'https://help.shopify.com',
