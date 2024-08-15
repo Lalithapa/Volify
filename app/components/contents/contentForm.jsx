@@ -33,22 +33,30 @@ export const ContentForm = ({ isEditing = false }) => {
   useEffect(() => {
     if (isEditing && loaderData) {
       setTitle(loaderData.title || "");
-      setProducts(loaderData.products || []);
+      setProducts(loaderData.products_json || []);
+      setDescription(loaderData.description || "");
+      setColor(loaderData.color || "#000000");
+      setStatus(loaderData.status || "draft");
+      setPublishAt(loaderData.publish_at || "");
     }
   }, [isEditing, loaderData]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    console.log('editing content ----> ', isEditing);
     const data = {
       title,
+      description,
       products,
+      color,
+      status,
+      publish_at: publishAt,
       created_at: isEditing ? loaderData.created_at : new Date().toISOString(),
       [isEditing ? "updateObject" : "createObject"]: true,
     };
 
     if (isEditing) {
-      data.id = loaderData.id; // Include the discount ID when updating
+      data.id = loaderData.id; // Include the id for editing
     }
 
     await submit(data, { method: "POST", encType: "application/json" });
@@ -83,7 +91,7 @@ export const ContentForm = ({ isEditing = false }) => {
                     label="Description"
                     value={description}
                     onChange={setDescription}
-                    multiline={5}
+                    multiline={7}
                   />
 
                   <ShipReadyProductSelector

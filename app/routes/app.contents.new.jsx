@@ -13,7 +13,7 @@ export const action = async ({ request }) => {
   let formData = await request.json();
   if (formData.createObject) {
     try {
-      const newContent = await saveDiscount(formData, metaobject);
+      const newContent = await saveObject(formData, metaobject);
       return redirect(`/app/contents/edit/${newContent.id.split("/").pop()}`);
     } catch (error) {
       return json(
@@ -40,12 +40,14 @@ async function saveObject(formData, metaobject) {
   // Create a new object structure to save in metaobject
   const objectStructure = {
     title: formData.title,
-    content_description: formData.content_description,
+    description: formData.description,
     products_reference: JSON.stringify(
       formData.products.flatMap((g) => g.variants.map((v) => v.id)),
     ),
     products_json: JSON.stringify(formData.products),
-    status: formData.status ? "true" : "false",
+    status: formData?.status || "draft",
+    color: formData.color,
+    publish_at: formData.publish_at,
     created_at: new Date().toISOString(),
   };
 

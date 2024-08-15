@@ -16,8 +16,8 @@ export const ContentModel = {
         },
         {
             name: "Content Description",
-            key: "content_description",
-            type: "rich_text_field",
+            key: "description",
+            type: "multi_line_text_field",
         },
         {
             name: "Products reference",
@@ -37,7 +37,7 @@ export const ContentModel = {
         {
             name: "Status",
             key: "status",
-            type: "boolean"
+            type: "single_line_text_field"
         },
         {
             name: "Created at",
@@ -47,7 +47,7 @@ export const ContentModel = {
         {
             name: "Publish at",
             key: "publish_at",
-            type: "date_time"
+            type: "date"
         }
 
     ],
