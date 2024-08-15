@@ -1,9 +1,10 @@
 import { Page } from "@shopify/polaris";
 import appConfig from "../../config/app";
-import { useActionData } from "@remix-run/react";
+import { useActionData, useNavigate } from "@remix-run/react";
 import { FooterHelp, Link } from "@shopify/polaris";
 import { useAppBridge } from "@shopify/app-bridge-react";
 import { useEffect } from "react";
+
 /**
  * A reusable PageLayout component that wraps the Polaris Page component
  * and applies the desired layout based on the provided props.
@@ -28,13 +29,14 @@ export default function PageLayout({
   const { fullWidthPageLayout, showTitleBar } = appConfig;
   const currentYear = new Date().getFullYear();
   const shopify = useAppBridge();
+  const navigate = useNavigate();
 
   const pageTitle = showTitleBar ? null : title;
   const backAction =
     showBackButton && !showTitleBar
       ? {
           content: "Back",
-          onAction: () => window.history.back(),
+          onAction: () => navigate(-1),
         }
       : null;
 

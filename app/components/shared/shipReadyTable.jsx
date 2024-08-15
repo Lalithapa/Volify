@@ -63,10 +63,10 @@ const ShipReadyTable = ({
       .replace(/^(.)/, (match) => match.toLowerCase());
     const value = item[key];
 
-    if (key === "status" || key === "isactive" || key === "isActive" || key === "active" || key === "published") {
-      const isActive = String(value).toLowerCase() === "true";
+    if (key === "status" || key === "isactive" || key === "isActive" || key === "active") {
+      const isActive = String(value).toLowerCase() == "true" || value == "published";
       return (
-        <Badge progress={isActive ? "complete" : "incomplete"}>
+        <Badge progress={isActive ? "complete" : "incomplete"} tone={isActive ? "success" : "info"}>
           {isActive ? "Active" : "Inactive"}
         </Badge>
       );
