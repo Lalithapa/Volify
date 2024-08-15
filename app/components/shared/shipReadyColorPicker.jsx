@@ -32,6 +32,7 @@ const ShipReadyColorPicker = ({
   }, []);
 
   const handleColorChange = useCallback((newColor) => {
+    console.log('newColor', newColor);
     setInternalColor(newColor);
     const hexColor = rgbToHex(hsbToRgb(newColor));
     setColor(hexColor);

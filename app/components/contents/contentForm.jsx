@@ -1,137 +1,120 @@
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import {
-  Card,
+  Box,
+  ColorPicker,
+  InlineStack,
+  Popover,
+  Text,
   TextField,
   BlockStack,
-  FormLayout,
-  Button,
-  Text,
-  Layout,
-  InlineStack,
-  Select,
-  Checkbox,
-  AppProvider as PolarisAppProvider,
+  hexToRgb,
+  hsbToRgb,
+  rgbToHex,
+  rgbToHsb,
+  Icon,
 } from "@shopify/polaris";
-import { useCallback, useState, useEffect } from "react";
-import PageLayout from "../shared/pageLayout";
-import ShipReadyProductSelector from "../shared/shipReadyProductSelector";
-import ShipReadyColorPicker from "../shared/shipReadyColorPicker";
-import ShipReadyDatePicker from "../shared/shipReadyDatePicker";
+import { ColorIcon } from "@shopify/polaris-icons";
 
-import { Form, useSubmit, useLoaderData } from "@remix-run/react";
-
-export const ContentForm = ({ isEditing = false }) => {
-  const submit = useSubmit();
-  const loaderData = useLoaderData();
-
-  const [title, setTitle] = useState("");
-  const [products, setProducts] = useState([]);
-  const [description, setDescription] = useState("");
-  const [color, setColor] = useState("#000000");
-  const [status, setStatus] = useState("draft");
-  const [publishAt, setPublishAt] = useState("");
+const ShipReadyColorPicker = ({ 
+  color, 
+  setColor, 
+  label = "Select color",
+  helpText,
+  name // Add a name prop for the hidden input
+}) => {
+  const [popoverActive, setPopoverActive] = useState(false);
+  const [internalColor, setInternalColor] = useState(() => {
+    const rgb = hexToRgb(color || "#FFFFFF");
+    return rgb ? rgbToHsb(rgb) : { hue: 0, saturation: 0, brightness: 1 };
+  });
 
   useEffect(() => {
-    if (isEditing && loaderData) {
-      setTitle(loaderData.title || "");
-      setProducts(loaderData.products_json || []);
-      setDescription(loaderData.description || "");
-      setColor(loaderData.color || "#000000");
-      setStatus(loaderData.status || "draft");
-      setPublishAt(loaderData.publish_at || "");
+    const rgb = hexToRgb(color || "#FFFFFF");
+    setInternalColor(rgb ? rgbToHsb(rgb) : { hue: 0, saturation: 0, brightness: 1 });
+  }, [color]);
+
+  const togglePopoverActive = useCallback(() => {
+    setPopoverActive((active) => !active);
+  }, []);
+
+  const handleColorChange = useCallback((newColor) => {
+    setInternalColor(newColor);
+    const hexColor = rgbToHex(hsbToRgb(newColor));
+    setColor(hexColor);
+  }, [setColor]);
+
+  const handleTextFieldChange = useCallback((value) => {
+    if (/^#[0-9A-F]{6}$/i.test(value)) {
+      const rgb = hexToRgb(value);
+      if (rgb) {
+        setInternalColor(rgbToHsb(rgb));
+        setColor(value);
+      }
     }
-  }, [isEditing, loaderData]);
+  }, [setColor]);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    console.log('editing content ----> ', isEditing);
-    const data = {
-      title,
-      description,
-      products,
-      color,
-      status,
-      publish_at: publishAt,
-      created_at: isEditing ? loaderData.created_at : new Date().toISOString(),
-      [isEditing ? "updateObject" : "createObject"]: true,
-    };
+  const currentHexColor = useMemo(() => rgbToHex(hsbToRgb(internalColor)), [internalColor]);
 
-    if (isEditing) {
-      data.id = loaderData.id; // Include the id for editing
-    }
-
-    await submit(data, { method: "POST", encType: "application/json" });
-  };
+  const activator = (
+    <InlineStack align="start" gap="200" wrap={false}>
+      <div
+        onClick={togglePopoverActive}
+        style={{
+          width: "40px",
+          height: "40px",
+          minWidth: "40px",
+          borderRadius: "20%",
+          background: currentHexColor,
+          cursor: "pointer",
+          border: "1px solid #bbb",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        {currentHexColor === "#FFFFFF" && <Icon source={ColorIcon} tone="subdued" />}
+      </div>
+      <Box>
+        <Text as="p" variant="bodyMd">
+          {label}
+        </Text>
+        <Text variant="bodySm" tone="subdued" fontWeight="regular">
+          {currentHexColor}
+        </Text>
+      </Box>
+    </InlineStack>
+  );
 
   return (
-    <PageLayout
-      showBackButton
-      title={isEditing ? "Edit Content" : "New Content"}
-    >
-      <Form
-        method="POST"
-        data-save-bar
-        data-discard-confirmation
-        onSubmit={handleSubmit}
-        onReset={() => {}}
+    <>
+      <Popover
+        active={popoverActive}
+        activator={activator}
+        autofocusTarget="first-node"
+        onClose={togglePopoverActive}
       >
-        <Layout>
-          <Layout.Section>
-            <BlockStack gap="500">
-              <Card sectioned>
-                <FormLayout>
-                  <TextField
-                    name="title"
-                    label="Title"
-                    value={title}
-                    onChange={setTitle}
-                  />
-
-                  <TextField
-                    name="description"
-                    label="Description"
-                    value={description}
-                    onChange={setDescription}
-                    multiline={7}
-                  />
-
-                  <ShipReadyProductSelector
-                    title="Select Content Products"
-                    subtitle="Choose the products that will be part of this campaign"
-                    products={products}
-                    setProducts={setProducts}
-                    multiple={true}
-                  />
-                </FormLayout>
-              </Card>
-            </BlockStack>
-          </Layout.Section>
-
-          {/* Sidebar */}
-          <Layout.Section variant="oneThird">
-            <Card>
-              <BlockStack gap="500">
-                <Select
-                  label="Status"
-                  options={[
-                    { label: "Draft", value: "draft" },
-                    { label: "Published", value: "published" },
-                  ]}
-                  onChange={setStatus}
-                  value={status}
-                />
-                <ShipReadyDatePicker
-                  date={publishAt}
-                  setDate={setPublishAt}
-                  label="Publish at"
-                />
-                <ShipReadyColorPicker color={color} setColor={setColor} />
-              </BlockStack>
-            </Card>
-          </Layout.Section>
-        </Layout>
-      </Form>
-    </PageLayout>
+        <BlockStack>
+          <Box padding="200">
+            <ColorPicker onChange={handleColorChange} color={internalColor} />
+          </Box>
+          <Box padding="200" paddingBlockStart="0">
+            <TextField
+              value={currentHexColor}
+              onChange={handleTextFieldChange}
+              autoComplete="off"
+              helpText={helpText}
+            />
+          </Box>
+        </BlockStack>
+      </Popover>
+      <input
+        type="hidden"
+        name={name}
+        value={currentHexColor}
+        onChange={() => {}} // React requires an onChange handler, even if it's empty
+      />
+    </>
   );
 };
 
-export default ContentForm;
+export default ShipReadyColorPicker;
