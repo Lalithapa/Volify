@@ -13,9 +13,9 @@ import {
 } from "@shopify/polaris";
 import { useCallback, useState, useEffect } from "react";
 import PageLayout from "../shared/pageLayout";
-import ShipReadyProductSelector from "../shared/shipReadyProductSelector";
-import ShipReadyColorPicker from "../shared/shipReadyColorPicker";
-import ShipReadyDatePicker from "../shared/shipReadyDatePicker";
+import ReadyProductSelector from "../shared/readyProductSelector";
+import ReadyColorPicker from "../shared/readyColorPicker";
+import ReadyDatePicker from "../shared/readyDatePicker";
 
 import { Form, useSubmit, useLoaderData } from "@remix-run/react";
 
@@ -94,7 +94,7 @@ export const ContentForm = ({ isEditing = false }) => {
                     multiline={7}
                   />
 
-                  <ShipReadyProductSelector
+                  <ReadyProductSelector
                     title="Select Content Products"
                     subtitle="Choose the products that will be part of this campaign"
                     products={products}
@@ -119,12 +119,12 @@ export const ContentForm = ({ isEditing = false }) => {
                   onChange={setStatus}
                   value={status}
                 />
-                <ShipReadyDatePicker
+                <ReadyDatePicker
                   date={publishAt}
                   setDate={setPublishAt}
                   label="Publish at"
                 />
-                <ShipReadyColorPicker color={color} setColor={setColor} />
+                <ReadyColorPicker color={color} setColor={setColor} />
               </BlockStack>
             </Card>
           </Layout.Section>

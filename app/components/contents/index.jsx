@@ -2,7 +2,7 @@ import { Layout, Button, Card, EmptyState } from "@shopify/polaris";
 import { useLoaderData } from "@remix-run/react";
 import { PageTitleBar } from "../shared/pageTitleBar";
 import PageLayout from "../shared/pageLayout";
-import ShipReadyTable from "../shared/shipReadyTable";
+import ReadyTable from "../shared/readyTable";
 
 export default function Contents() {
     const { contentsObject } = useLoaderData();
@@ -40,7 +40,7 @@ export default function Contents() {
                 </EmptyState>
             </Card>
             ) : (
-            <ShipReadyTable
+            <ReadyTable
                 data={contentsObject}
                 resourceName={{ singular: 'Content', plural: 'Contents', handle: 'contents' }}
                 selectable={false}

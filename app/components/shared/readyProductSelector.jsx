@@ -11,7 +11,7 @@ import {
 } from "@shopify/polaris";
 import { UndoIcon, ImageIcon } from "@shopify/polaris-icons";
 
-export default function ShipReadyProductSelector({
+export default function ReadyProductSelector({
   title,
   subtitle = "",
   products,

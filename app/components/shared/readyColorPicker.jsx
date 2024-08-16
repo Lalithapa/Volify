@@ -15,7 +15,7 @@ import {
 } from "@shopify/polaris";
 import { ColorIcon } from "@shopify/polaris-icons";
 
-const ShipReadyColorPicker = ({ 
+const ReadyColorPicker = ({ 
   color, 
   setColor, 
   label = "Select color",
@@ -104,4 +104,4 @@ const ShipReadyColorPicker = ({
   );
 };
 
-export default ShipReadyColorPicker;
+export default ReadyColorPicker;

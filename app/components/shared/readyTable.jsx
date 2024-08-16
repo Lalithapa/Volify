@@ -16,7 +16,7 @@ import { EditIcon, DeleteIcon } from "@shopify/polaris-icons";
 import { Modal, TitleBar } from "@shopify/app-bridge-react";
 import { useSubmit } from "@remix-run/react";
 
-const ShipReadyTable = ({
+const ReadyTable = ({
   data,
   resourceName = { singular: "item", plural: "items" },
   headings,
@@ -219,4 +219,4 @@ const ShipReadyTable = ({
   );
 };
 
-export default ShipReadyTable;
+export default ReadyTable;

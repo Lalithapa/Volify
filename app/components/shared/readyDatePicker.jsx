@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Popover, TextField, Card, DatePicker, Icon } from '@shopify/polaris';
 import { CalendarIcon } from '@shopify/polaris-icons';
 
-const ShipReadyDatePicker = ({ date, setDate, label = "Select date" }) => {
+const ReadyDatePicker = ({ date, setDate, label = "Select date" }) => {
   const [visible, setVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState(date ? new Date(date) : new Date());
   const [{ month, year }, setDisplayDate] = useState({
@@ -77,4 +77,4 @@ const ShipReadyDatePicker = ({ date, setDate, label = "Select date" }) => {
   );
 };
 
-export default ShipReadyDatePicker;
+export default ReadyDatePicker;
