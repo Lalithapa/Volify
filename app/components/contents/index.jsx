@@ -14,6 +14,8 @@ export default function Contents() {
         { title: 'Actions' },
       ];
 
+      console.log('contentsObject -----> ', contentsObject);
+
     return (
         <PageLayout 
             showBackButton 

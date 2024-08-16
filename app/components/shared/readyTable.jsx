@@ -59,8 +59,9 @@ const ReadyTable = ({
 
   const renderCell = (item, heading) => {
     const key = heading.title
-      .replace(/\s+/g, "")
-      .replace(/^(.)/, (match) => match.toLowerCase());
+      .trim()
+      .replace(/\s+/g, "_")
+      .toLowerCase();
     const value = item[key];
 
     if (key === "status" || key === "isactive" || key === "isActive" || key === "active") {
@@ -71,8 +72,8 @@ const ReadyTable = ({
         </Badge>
       );
     }
-
-    if (key === "createdAt" || key === "date") {
+    if (key == "created_at" || key == "date" || key == "createdAt") {
+      console.log("value", value);
       return value
         ? new Date(value).toLocaleDateString("en-GB", {
             day: "numeric",
