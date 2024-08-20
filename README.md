@@ -26,7 +26,7 @@ ShipReady is a comprehensive, production-ready template for building Shopify app
 1. Clone the repository:
 
     ```bash
-      git clone https://github.com/your-repo/shipready.git
+      git clone https://github.com/Hujjat/ShipReady.git shipready
       cd shipready
     ```
 
