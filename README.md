@@ -19,7 +19,7 @@ ShipReady is a comprehensive, production-ready template for building Shopify app
 
 1. **Node.js**: [Download and install](https://nodejs.org/en/download/) (v14 or later recommended)
 2. **Shopify Partner Account**: [Create an account](https://partners.shopify.com/signup)
-3. **Shopify CLI**: Install via npm `npm install -g @shopify/cli @shopify/app`
+3. **Shopify CLI**: Install via npm `npm install -g @shopify/cli@latest`
 
 ### Setup
 
