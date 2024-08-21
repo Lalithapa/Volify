@@ -414,7 +414,7 @@ export class MetaObject {
    */
   async list({ type, fieldDefinitions }, limit = 50, cursor = null) {
 
-    await this.updateDefinition(type, fieldDefinitions);
+    // await this.updateDefinition(type, fieldDefinitions);
 
     let fields = fieldDefinitions.map(def => 
       `${def.key}: field(key: "${def.key}") { value }`
