@@ -28,7 +28,7 @@ export const ContentForm = ({ isEditing = false }) => {
   const [description, setDescription] = useState("");
   const [color, setColor] = useState("#000000");
   const [status, setStatus] = useState("draft");
-  const [publishAt, setPublishAt] = useState("");
+  const [publishAt, setPublishAt] = useState(Date.now());
 
   useEffect(() => {
     if (isEditing && loaderData) {

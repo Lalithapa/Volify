@@ -524,6 +524,11 @@ export class MetaObject {
       case "boolean":
         return value.toString();
       case "date":
+        const date = value instanceof Date ? value : new Date(value);
+        if (isNaN(date.getTime())) {
+          throw new Error("Invalid date value");
+        }
+        return date.toISOString().split("T")[0];
       case "date_time":
         return value instanceof Date ? value.toISOString() : new Date(value).toISOString();
       default:
