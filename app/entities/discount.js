@@ -94,7 +94,7 @@ export class Discount {
           }
         }
       }`;
-
+  
     const variables = {
       id,
       automaticAppDiscount: {
@@ -102,25 +102,29 @@ export class Discount {
         combinesWith,
         startsAt,
         endsAt,
-        metafields
       }
     };
-
+  
     try {
+      // Update the discount without metafields
       const response = await this.admin.graphql(mutation, { variables });
       const { data: { discountAutomaticAppUpdate } } = await response.json();
-
+  
       if (discountAutomaticAppUpdate.userErrors && discountAutomaticAppUpdate.userErrors.length > 0) {
         const errorMessages = discountAutomaticAppUpdate.userErrors.map(error => `${error.message} (Field: ${error.field}, Code: ${error.code})`);
         throw new Error(`Failed to update automatic discount: ${errorMessages.join(', ')}`);
       }
-
+  
+      // If metafields were provided, update them separately
+      if (metafields.length > 0) {
+        await this.updateAutomaticMetafields(id, metafields);
+      }
+  
       return discountAutomaticAppUpdate.automaticAppDiscount;
     } catch (error) {
       console.error('Error updating automatic discount:', error);
       throw error;
     }
-    
   }
 
   async deactivateAutomatic(automaticDiscountId) {
@@ -246,16 +250,15 @@ export class Discount {
     }
   }
 
-  async setAutomaticMetafields(discountId, data) {
+  async setAutomaticMetafields(discountId, metafields) {
     const mutation = `#graphql
       mutation MetafieldsSet($metafields: [MetafieldsSetInput!]!) {
         metafieldsSet(metafields: $metafields) {
           metafields {
+            id
             key
             namespace
             value
-            createdAt
-            updatedAt
           }
           userErrors {
             field
@@ -266,25 +269,29 @@ export class Discount {
       }`;
 
     const variables = {
-      metafields: [
-        {
-          key: "function-configuration",
-          namespace: "discount",
-          ownerId: discountId,
-          value: JSON.stringify(data),
-          type: "json"
-        }
-      ]
+      metafields: metafields.map(metafield => ({
+        key: metafield.key,
+        namespace: metafield.namespace,
+        ownerId: discountId,
+        value: typeof metafield.value === 'string' ? metafield.value : JSON.stringify(metafield.value),
+        type: metafield.type || "json",
+        ...(metafield.id && { id: metafield.id }) // Include id if it exists
+      }))
     };
 
     try {
       const response = await this.admin.graphql(mutation, { variables });
-      return await response.json();
+      const result = await response.json();
+
+      if (result.data.metafieldsSet.userErrors.length > 0) {
+        throw new Error(result.data.metafieldsSet.userErrors.map(e => e.message).join(', '));
+      }
+
+      return result.data.metafieldsSet.metafields;
     } catch (error) {
       console.error('Error setting automatic discount metafields:', error);
       throw error;
     }
-
   }
 
   async getAutomaticWithMetafield(id, metafieldKey, metafieldNamespace) {
@@ -519,5 +526,61 @@ export class Discount {
     }
 
   }
+
+  async updateAutomaticMetafields(discountId, metafields) {
+    try {
+      const formattedMetafields = metafields.map(metafield => ({
+        ownerId: discountId,
+        namespace: metafield.namespace,
+        key: metafield.key,
+        value: typeof metafield.value === 'string' ? metafield.value : JSON.stringify(metafield.value),
+        type: metafield.type || "json"
+      }));
+
+      const result = await this.setAutomaticMetafields(formattedMetafields);
+      return result;
+    } catch (error) {
+      console.error(`Error updating metafields:`, error);
+      throw new Error(`Failed to update metafields: ${error.message}`);
+    }
+  }
+  
+  async setAutomaticMetafields(metafields) {
+    const mutation = `#graphql
+      mutation MetafieldsSet($metafields: [MetafieldsSetInput!]!) {
+        metafieldsSet(metafields: $metafields) {
+          metafields {
+            id
+            key
+            namespace
+            value
+          }
+          userErrors {
+            field
+            message
+            code
+          }
+        }
+      }`;
+
+    const variables = {
+      metafields: metafields
+    };
+
+    try {
+      const response = await this.admin.graphql(mutation, { variables });
+      const result = await response.json();
+
+      if (result.data.metafieldsSet.userErrors.length > 0) {
+        throw new Error(result.data.metafieldsSet.userErrors.map(e => e.message).join(', '));
+      }
+
+      return result.data.metafieldsSet.metafields;
+    } catch (error) {
+      console.error('Error setting metafields:', error);
+      throw error;
+    }
+  }
+
 
 }
