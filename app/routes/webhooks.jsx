@@ -27,21 +27,25 @@ export const action = async ({ request }) => {
        * Customers can request their data from a store owner. When this happens, Shpify we call this endpoint so
        * Here write your business logic for handling this event!
        */
-      break;
+      await WebhookModel.create({ shop, topic, payload });
+      return new Response("Customers data request received", { status: 200 });
     case "CUSTOMERS_REDACT":
       /**
        * Store owners can request that data is deleted on behalf of a customer.
        * When this happens, Shopify sends a payload on the customers/redact topic to the apps installed on that store.
        * Here write your business logic for handling this event!
        */
-      break;
+      await WebhookModel.create({ shop, topic, payload });
+      return new Response("Customers data request received", { status: 200 });
+
     case "SHOP_REDACT":
       /**
        * 48 hours after a store owner uninstalls your app, Shopify sends a payload on the shop/redact topic.
        * This webhook provides the store's shop_id and shop_domain so that you can erase data for that store from your database.
        * Here write your business logic for handling this event!
        */
-      break;
+      await WebhookModel.create({ shop, topic, payload });
+      return new Response("Shop data request received", { status: 200 });
     default:
       /** If the webhook is not added to this switch-case the will be responded ith 404 */
       throw new Response("Unhandled webhook topic", { status: 404 });
