@@ -7,7 +7,7 @@ import {
   Button,
   InlineStack,
 } from "@shopify/polaris";
-import { DeleteIcon, EyeCheckMarkIcon } from "@shopify/polaris-icons";
+import { EyeCheckMarkIcon } from "@shopify/polaris-icons";
 import { useState } from "react";
 
 export function ChangeLogs({ selectedTab }) {
@@ -68,6 +68,8 @@ export function ChangeLogs({ selectedTab }) {
       link: "#",
     },
   ]);
+
+  const handleDeleteChangeLog = (index) => {};
 
   return selectedTab !== "change-log" ? null : (
     <Card>

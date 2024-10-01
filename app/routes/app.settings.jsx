@@ -8,26 +8,22 @@ const METAFIELD_KEY = "appSettings";
 const METAFIELD_TYPE = "json";
 
 export const loader = async ({ request }) => {
-  const { metaobject, metafield } =
-    await authenticateExtra(request);
-  const features = await metaobject.list(FeatureModel);
-  const currentAppMetafield = await metafield.getCurrentAppMetafield(
-    METAFIELD_NAMESPACE,
-    METAFIELD_KEY,
-  );
-  
-  return json({
-    settingsData: currentAppMetafield?.value
-      ? JSON.parse(currentAppMetafield?.value)
-      : {},
-    features
-  });
-  
+  const { metaobject, metafield } = await authenticateExtra(request);
+
+  const [features, currentAppMetafield] = await Promise.all([
+    metaobject.list(FeatureModel),
+    metafield.getCurrentAppMetafield(METAFIELD_NAMESPACE, METAFIELD_KEY),
+  ]);
+
+  const settingsData = currentAppMetafield?.value
+    ? JSON.parse(currentAppMetafield.value)
+    : {};
+
+  return json({ settingsData, features });
 };
 
 export async function action({ request }) {
-  const { metafield, metaobject } =
-    await authenticateExtra(request);
+  const { metafield, metaobject } = await authenticateExtra(request);
   let formData = Object.fromEntries(await request.formData());
 
   if (formData.saveSettings) {
@@ -48,7 +44,9 @@ export async function action({ request }) {
       // Check if the MetaObject definition already exists
       let definition;
       try {
-        definition = await metaobject.getDefinition({ type: FeatureModel.type });
+        definition = await metaobject.getDefinition({
+          type: FeatureModel.type,
+        });
       } catch (error) {
         // If the definition doesn't exist, create it
         if (error.message.includes("No definition found")) {
@@ -66,12 +64,15 @@ export async function action({ request }) {
       }
     } catch (e) {
       console.error("Error saving features:", e);
-      return json({
-        status: {
-          success: false,
-          message: `Error saving features: ${e.message}`,
-        }
-      }, { status: 400 });
+      return json(
+        {
+          status: {
+            success: false,
+            message: `Error saving features: ${e.message}`,
+          },
+        },
+        { status: 400 },
+      );
     }
   }
 
@@ -80,12 +81,15 @@ export async function action({ request }) {
       await metaobject.delete(formData.id);
     } catch (e) {
       console.error("Error deleting feature:", e);
-      return json({
-        status: {
-          success: false,
-          message: `Error deleting feature: ${e.message}`,
-        }
-      }, { status: 400 });
+      return json(
+        {
+          status: {
+            success: false,
+            message: `Error deleting feature: ${e.message}`,
+          },
+        },
+        { status: 400 },
+      );
     }
   }
 
@@ -94,7 +98,7 @@ export async function action({ request }) {
     status: {
       success: true,
       message: "Operation completed successfully",
-    }
+    },
   });
 }
 

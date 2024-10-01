@@ -4,7 +4,7 @@ import {
   DeliveryMethod,
   shopifyApp,
   LATEST_API_VERSION,
-  ApiVersion
+  ApiVersion,
 } from "@shopify/shopify-app-remix/server";
 import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prisma";
 import { restResources } from "@shopify/shopify-api/rest/admin/2024-07";
@@ -15,7 +15,11 @@ import { Metafield } from "../entities/metafield.js";
 import { ShipReady } from "../entities/shipready.js";
 import { Webhook } from "../entities/webhook.js";
 
-console.log("---------- LATEST_API_VERSION: ", LATEST_API_VERSION, "----------");
+console.log(
+  "---------- LATEST_API_VERSION: ",
+  LATEST_API_VERSION,
+  "----------",
+);
 console.log("---------- Available ApiVersions: ", ApiVersion, "----------");
 
 /*
@@ -84,7 +88,7 @@ export const authenticateExtra = async (request) => {
   const metaobject = new MetaObject(admin);
   const metafield = new Metafield(admin);
   const shipReady = new ShipReady(admin, session);
-  const webhook = new Webhook(admin, session);
+  const webhook = new Webhook(admin);
 
   return {
     metaobject,

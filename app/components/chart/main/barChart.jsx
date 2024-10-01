@@ -1,4 +1,3 @@
-// Returning customer rate
 import { BarChart as Chart } from "@shopify/polaris-viz";
 import { ChartBase } from "./chartBase";
 import { Heading } from "./heading";

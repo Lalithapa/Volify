@@ -3,6 +3,7 @@
  * @class
  */
 export class MetaObject {
+  META_OBJECT_PREFIX = "gid://shopify/Metaobject/";
   /**
    * Create a MetaObject instance.
    * @param {Object} admin - The Shopify admin access object.
@@ -21,12 +22,12 @@ export class MetaObject {
   async define(definitionType) {
     const requiredProps = ["name", "type", "access", "fieldDefinitions"];
     const missingProps = requiredProps.filter(
-      (prop) => !definitionType.hasOwnProperty(prop)
+      (prop) => !definitionType.hasOwnProperty(prop),
     );
 
     if (missingProps.length > 0) {
       throw new Error(
-        `Definition required properties: ${missingProps.join(", ")}`
+        `Definition required properties: ${missingProps.join(", ")}`,
       );
     }
 
@@ -57,17 +58,28 @@ export class MetaObject {
     }`;
 
     try {
-      const response = await this.admin.graphql(mutation, { variables: { definition } });
-      const { data: { metaobjectDefinitionCreate } } = await response.json();
+      const response = await this.admin.graphql(mutation, {
+        variables: { definition },
+      });
+      const {
+        data: { metaobjectDefinitionCreate },
+      } = await response.json();
 
       if (metaobjectDefinitionCreate.userErrors.length > 0) {
-        throw new Error(metaobjectDefinitionCreate.userErrors.map(e => e.message).join(', '));
+        throw new Error(
+          metaobjectDefinitionCreate.userErrors
+            .map((e) => e.message)
+            .join(", "),
+        );
       }
 
-      this.definitionCache.set(definitionType.type, metaobjectDefinitionCreate.metaobjectDefinition);
+      this.definitionCache.set(
+        definitionType.type,
+        metaobjectDefinitionCreate.metaobjectDefinition,
+      );
       return metaobjectDefinitionCreate.metaobjectDefinition;
     } catch (error) {
-      console.error('Error defining MetaObject:', error);
+      console.error("Error defining MetaObject:", error);
       throw error;
     }
   }
@@ -103,7 +115,9 @@ export class MetaObject {
 
     try {
       const response = await this.admin.graphql(query);
-      const { data: { metaobjectDefinitionByType } } = await response.json();
+      const {
+        data: { metaobjectDefinitionByType },
+      } = await response.json();
 
       if (!metaobjectDefinitionByType) {
         throw new Error(`No definition found for type: ${type}`);
@@ -112,7 +126,7 @@ export class MetaObject {
       this.definitionCache.set(type, metaobjectDefinitionByType);
       return metaobjectDefinitionByType;
     } catch (error) {
-      console.error('Error getting MetaObject definition:', error);
+      console.error("Error getting MetaObject definition:", error);
       throw error;
     }
   }
@@ -125,14 +139,18 @@ export class MetaObject {
    * @returns {Promise<Object>} The updated MetaObject definition.
    * @throws {Error} If there's an API error.
    * @example
-    */
+   */
 
   async updateDefinition(type, newFieldDefinitions) {
     const existingDefinition = await this.getDefinition({ type });
-    const existingFields = new Set(existingDefinition.fieldDefinitions.map(f => f.key));
-    
-    const fieldDefinitionsToCreate = newFieldDefinitions.filter(f => !existingFields.has(f.key));
-    
+    const existingFields = new Set(
+      existingDefinition.fieldDefinitions.map((f) => f.key),
+    );
+
+    const fieldDefinitionsToCreate = newFieldDefinitions.filter(
+      (f) => !existingFields.has(f.key),
+    );
+
     if (fieldDefinitionsToCreate.length === 0) {
       return existingDefinition; // No new fields to add
     }
@@ -162,28 +180,37 @@ export class MetaObject {
     const variables = {
       id: existingDefinition.id,
       definition: {
-        fieldDefinitions: fieldDefinitionsToCreate.map(f => ({
+        fieldDefinitions: fieldDefinitionsToCreate.map((f) => ({
           create: {
             key: f.key,
             name: f.name,
-            type: f.type
-          }
-        }))
-      }
+            type: f.type,
+          },
+        })),
+      },
     };
 
     try {
       const response = await this.admin.graphql(mutation, { variables });
-      const { data: { metaobjectDefinitionUpdate } } = await response.json();
+      const {
+        data: { metaobjectDefinitionUpdate },
+      } = await response.json();
 
       if (metaobjectDefinitionUpdate.userErrors.length > 0) {
-        throw new Error(metaobjectDefinitionUpdate.userErrors.map(e => e.message).join(', '));
+        throw new Error(
+          metaobjectDefinitionUpdate.userErrors
+            .map((e) => e.message)
+            .join(", "),
+        );
       }
 
-      this.definitionCache.set(type, metaobjectDefinitionUpdate.metaobjectDefinition);
+      this.definitionCache.set(
+        type,
+        metaobjectDefinitionUpdate.metaobjectDefinition,
+      );
       return metaobjectDefinitionUpdate.metaobjectDefinition;
     } catch (error) {
-      console.error('Error updating MetaObject definition:', error);
+      console.error("Error updating MetaObject definition:", error);
       throw error;
     }
   }
@@ -210,17 +237,25 @@ export class MetaObject {
     }`;
 
     try {
-      const response = await this.admin.graphql(mutation, { variables: { id: definition.id } });
-      const { data: { metaobjectDefinitionDelete } } = await response.json();
+      const response = await this.admin.graphql(mutation, {
+        variables: { id: definition.id },
+      });
+      const {
+        data: { metaobjectDefinitionDelete },
+      } = await response.json();
 
       if (metaobjectDefinitionDelete.userErrors.length > 0) {
-        throw new Error(metaobjectDefinitionDelete.userErrors.map(e => e.message).join(', '));
+        throw new Error(
+          metaobjectDefinitionDelete.userErrors
+            .map((e) => e.message)
+            .join(", "),
+        );
       }
 
       this.definitionCache.delete(type);
       return metaobjectDefinitionDelete;
     } catch (error) {
-      console.error('Error deleting MetaObject definition:', error);
+      console.error("Error deleting MetaObject definition:", error);
       throw error;
     }
   }
@@ -251,6 +286,8 @@ export class MetaObject {
       })
       .filter(Boolean); // Remove null entries
 
+    const customHandle = data?.handle ? { handle: data?.handle } : {};
+
     const mutation = `#graphql
     mutation CreateMetaobject($metaobject: MetaobjectCreateInput!) {
       metaobjectCreate(metaobject: $metaobject) {
@@ -269,7 +306,7 @@ export class MetaObject {
 
     try {
       const response = await this.admin.graphql(mutation, {
-        variables: { metaobject: { type, fields } },
+        variables: { metaobject: { type, fields, ...customHandle } },
       });
       const {
         data: {
@@ -297,12 +334,11 @@ export class MetaObject {
    * @throws {Error} If there's an API error.
    */
   async find({ type, fieldDefinitions }, id) {
-    
     await this.updateDefinition(type, fieldDefinitions);
 
-    let fields = fieldDefinitions.map(def => 
-      `${def.key}: field(key: "${def.key}") { value }`
-    ).join('\n');
+    let fields = fieldDefinitions
+      .map((def) => `${def.key}: field(key: "${def.key}") { value }`)
+      .join("\n");
 
     const query = `#graphql
     query {
@@ -316,7 +352,9 @@ export class MetaObject {
 
     try {
       const response = await this.admin.graphql(query);
-      const { data: { metaobject } } = await response.json();
+      const {
+        data: { metaobject },
+      } = await response.json();
 
       if (!metaobject) {
         throw new Error(`MetaObject not found with ID: ${id}`);
@@ -324,7 +362,14 @@ export class MetaObject {
 
       let fieldsValue = {};
       for (const def of fieldDefinitions) {
-        fieldsValue[def.key] = metaobject[def.key]?.value || null;
+        if (def.type == "json") {
+          const emptyValue = def.type?.endsWith("s") ? [] : {};
+          fieldsValue[def.key] = JSON.parse(
+            metaobject[def.key]?.value || emptyValue,
+          );
+        } else {
+          fieldsValue[def.key] = metaobject[def.key]?.value || null;
+        }
       }
 
       return {
@@ -334,7 +379,7 @@ export class MetaObject {
         ...fieldsValue,
       };
     } catch (error) {
-      console.error('Error finding MetaObject:', error);
+      console.error("Error finding MetaObject:", error);
       throw error;
     }
   }
@@ -351,7 +396,7 @@ export class MetaObject {
   async update({ type, fieldDefinitions }, id, data) {
     // Update definition if new fields are added
     await this.updateDefinition(type, fieldDefinitions);
-  
+
     const fields = fieldDefinitions
       .map((def) => {
         const value = this._formatFieldValue(def.type, data[def.key]);
@@ -364,7 +409,7 @@ export class MetaObject {
           : null;
       })
       .filter(Boolean); // Remove null entries
-  
+
     const mutation = `#graphql
     mutation UpdateMetaobject($id: ID!, $metaobject: MetaobjectUpdateInput!) {
       metaobjectUpdate(id: $id, metaobject: $metaobject) {
@@ -380,7 +425,7 @@ export class MetaObject {
         }
       }
     }`;
-  
+
     try {
       const response = await this.admin.graphql(mutation, {
         variables: { id, metaobject: { fields } },
@@ -390,11 +435,11 @@ export class MetaObject {
           metaobjectUpdate: { metaobject, userErrors },
         },
       } = await response.json();
-  
+
       if (userErrors.length > 0) {
         throw new Error(userErrors.map((e) => e.message).join(", "));
       }
-  
+
       return metaobject;
     } catch (error) {
       console.error("Error updating MetaObject:", error);
@@ -412,18 +457,22 @@ export class MetaObject {
    * @returns {Promise<Object>} The list of MetaObjects and pagination info.
    * @throws {Error} If there's an API error.
    */
-  async list({ type, fieldDefinitions }, limit = 50, cursor = null) {
-
+  async list(
+    { type, fieldDefinitions },
+    limit = 50,
+    cursor = null,
+    queryString = "",
+  ) {
     // await this.updateDefinition(type, fieldDefinitions);
 
-    let fields = fieldDefinitions.map(def => 
-      `${def.key}: field(key: "${def.key}") { value }`
-    ).join('\n');
+    let fields = fieldDefinitions
+      .map((def) => `${def.key}: field(key: "${def.key}") { value }`)
+      .join("\n");
 
-    let cursorParam = cursor ? `, after: "${cursor}"` : '';
+    let cursorParam = cursor ? `, after: "${cursor}"` : "";
     const query = `#graphql
     query {
-        metaobjects(type: "${type}", first: ${limit}${cursorParam}) {
+        metaobjects(type: "${type}", first: ${limit}${cursorParam} ${queryString}) {
             nodes {
                 id
                 handle
@@ -439,12 +488,23 @@ export class MetaObject {
 
     try {
       const response = await this.admin.graphql(query);
-      const { data: { metaobjects: { nodes, pageInfo } } } = await response.json();
+      const {
+        data: {
+          metaobjects: { nodes, pageInfo },
+        },
+      } = await response.json();
 
-      const formattedNodes = nodes.map(node => {
+      const formattedNodes = nodes.map((node) => {
         let fieldsValue = {};
         for (const def of fieldDefinitions) {
-          fieldsValue[def.key] = node[def.key]?.value || null;
+          if (def.type == "json") {
+            const emptyValue = def.type?.endsWith("s") ? [] : {};
+            fieldsValue[def.key] = JSON.parse(
+              node[def.key]?.value || emptyValue,
+            );
+          } else {
+            fieldsValue[def.key] = node[def.key]?.value || null;
+          }
         }
         return {
           id: node.id,
@@ -456,7 +516,7 @@ export class MetaObject {
 
       return { nodes: formattedNodes, pageInfo };
     } catch (error) {
-      console.error('Error listing MetaObjects:', error);
+      console.error("Error listing MetaObjects:", error);
       throw error;
     }
   }
@@ -480,16 +540,22 @@ export class MetaObject {
     }`;
 
     try {
-      const response = await this.admin.graphql(mutation, { variables: { id } });
-      const { data: { metaobjectDelete: { deletedId, userErrors } } } = await response.json();
+      const response = await this.admin.graphql(mutation, {
+        variables: { id },
+      });
+      const {
+        data: {
+          metaobjectDelete: { deletedId, userErrors },
+        },
+      } = await response.json();
 
       if (userErrors.length > 0) {
-        throw new Error(userErrors.map(e => e.message).join(', '));
+        throw new Error(userErrors.map((e) => e.message).join(", "));
       }
 
       return deletedId;
     } catch (error) {
-      console.error('Error deleting MetaObject:', error);
+      console.error("Error deleting MetaObject:", error);
       throw error;
     }
   }
@@ -501,7 +567,7 @@ export class MetaObject {
     switch (type) {
       case "json":
         // If it's already a string, assume it's properly JSON-formatted
-        if (typeof value === 'string') {
+        if (typeof value === "string") {
           try {
             // Validate that it's proper JSON
             JSON.parse(value);
@@ -520,7 +586,7 @@ export class MetaObject {
           return JSON.stringify(value);
         }
         // If it's not an array, return an empty array string
-        return '[]';
+        return "[]";
       case "boolean":
         return value.toString();
       case "date":
@@ -530,7 +596,9 @@ export class MetaObject {
         }
         return date.toISOString().split("T")[0];
       case "date_time":
-        return value instanceof Date ? value.toISOString() : new Date(value).toISOString();
+        return value instanceof Date
+          ? value.toISOString()
+          : new Date(value).toISOString();
       default:
         return value;
     }

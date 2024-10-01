@@ -486,14 +486,14 @@ export class Discount {
     const variables = { id: discountId };
     try {
       const response = await this.admin.graphql(mutation, { variables });
-      const { data: { discountAutomaticDeactivate } } = await response.json();
+      const { data: { discountCodeDeactivate } } = await response.json();
 
-      if (discountAutomaticDeactivate.userErrors && discountAutomaticDeactivate.userErrors.length > 0) {
-        const errorMessages = discountAutomaticDeactivate.userErrors.map(error => `${error.message} (Field: ${error.field})`);
+      if (discountCodeDeactivate.userErrors && discountCodeDeactivate.userErrors.length > 0) {
+        const errorMessages = discountCodeDeactivate.userErrors.map(error => `${error.message} (Field: ${error.field})`);
         throw new Error(`Failed to deactivate automatic discount: ${errorMessages.join(', ')}`);
       }
 
-      return discountAutomaticDeactivate.automaticDiscountNode;
+      return discountCodeDeactivate.codeDiscountNode;
     } catch (error) {
       console.error('Error deactivating automatic discount:', error);
       throw error;
