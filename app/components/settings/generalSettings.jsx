@@ -5,14 +5,14 @@ import {
   FormLayout,
   TextField,
 } from "@shopify/polaris";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Form } from "@remix-run/react";
 
 export function GeneralSettings({ selectedTab, settings, setSettings }) {
-    
   useEffect(() => {
     if (settings) {
-      const parsedSettings = typeof settings === 'string' ? JSON.parse(settings) : settings;
+      const parsedSettings =
+        typeof settings === "string" ? JSON.parse(settings) : settings;
       setSettings(parsedSettings);
     }
   }, [settings]);

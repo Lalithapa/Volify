@@ -1,4 +1,3 @@
-// Returning customer rate
 import { SparkLineChart as Chart } from "@shopify/polaris-viz";
 import { WidgetBase } from "./widgetBase";
 import { WidgetHeading } from "./widgetHeading";

@@ -7,7 +7,6 @@ export const AddFeatureModal = ({ selected, setSelected }) => {
   const [featureName, setFeatureName] = useState();
   const [featureDetails, setFeatureDetails] = useState();
 
-
   useEffect(() => {
     if (selected) {
       setFeatureName(selected?.featureName);
@@ -49,18 +48,20 @@ export const AddFeatureModal = ({ selected, setSelected }) => {
         </Box>
 
         <TitleBar title="Add Feature">
-
           <button
-            onClick={() => handleSubmit() }
+            onClick={() => handleSubmit()}
             variant="primary"
-            type="submit">
+            type="submit"
+          >
             Save
           </button>
 
-          <button type="button"
+          <button
+            type="button"
             onClick={() => {
               shopify.modal.hide("add-feature-modal");
-            }}>
+            }}
+          >
             Cancel
           </button>
         </TitleBar>
