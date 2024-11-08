@@ -481,6 +481,7 @@ export class MetaObject {
             }
             pageInfo {
                 hasNextPage
+                hasPreviousPage
                 endCursor
             }
         }
