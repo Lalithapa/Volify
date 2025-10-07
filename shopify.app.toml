@@ -2,7 +2,7 @@
 
 client_id = "b541c11c80c012511c99b477421bcdc6"
 name = "shipready-demo"
-handle = "shipready-demo"
+handle = "shipready-16"
 application_url = "https://original-tower-rome-going.trycloudflare.com"
 embedded = true
 
