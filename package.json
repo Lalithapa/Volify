@@ -18,7 +18,8 @@
     "graphql-codegen": "graphql-codegen",
     "vite": "vite",
     "extension-build": "vite build --config vite.extension.config.js",
-    "extension-watch": "vite build --config vite.extension.config.js --watch"
+    "extension-watch": "vite build --config vite.extension.config.js --watch",
+    "auto-push": "node auto-push.js"
   },
   "prisma": {
     "seed": "node prisma/seeds/index.js"
