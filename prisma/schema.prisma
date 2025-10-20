@@ -1,12 +1,3 @@
-generator client {
-  provider = "prisma-client-js"
-}
-
-datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"   // مسیر دقیق فایل دیتابیس SQLite شما
-}
-
 model Session {
   id            String    @id
   shop          String
@@ -29,7 +20,7 @@ model Event {
   id        Int      @id @default(autoincrement())
   shop      String
   name      String
-  data      Json?    @default("{}")
+  data      String?  @default("{}")  // تغییر از Json به String
   createdAt DateTime @default(now())
 }
 
@@ -37,6 +28,6 @@ model Webhook {
   id        Int      @id @default(autoincrement())
   shop      String
   topic     String
-  payload   Json?    @default("{}")
+  payload   String?  @default("{}")  // تغییر از Json به String
   createdAt DateTime @default(now())
 }
