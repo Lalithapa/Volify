@@ -5,13 +5,9 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// Note that some adapters may set a maximum length for the String type by default, please ensure your strings are long
-// enough when changing adapters.
-// See https://www.prisma.io/docs/orm/reference/prisma-schema-reference#string for more information
-
 datasource db {
   provider = "sqlite"
-  url      = 'file:./dev.db'
+  url      = "file:./dev.db"
 }
 
 model Session {
@@ -36,7 +32,8 @@ model Event {
   id        Int      @id @default(autoincrement())
   shop      String
   name      String
-  data      Json?    @default("{}")
+  // store JSON as a string in SQLite
+  data      String?  @default("{}")
   createdAt DateTime @default(now())
 }
 
@@ -44,6 +41,7 @@ model Webhook {
   id        Int      @id @default(autoincrement())
   shop      String
   topic     String
-  payload   Json?    @default("{}")
+  // store JSON as a string in SQLite
+  payload   String?  @default("{}")
   createdAt DateTime @default(now())
 }
