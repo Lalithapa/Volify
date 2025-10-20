@@ -10,6 +10,7 @@ datasource db {
   url      = "file:./dev.db"
 }
 
+
 model Session {
   id            String    @id
   shop          String
