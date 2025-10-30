@@ -15,12 +15,12 @@ import { Metafield } from "../entities/metafield.js";
 import { ShipReady } from "../entities/shipready.js";
 import { Webhook } from "../entities/webhook.js";
 
-console.log(
-  "---------- LATEST_API_VERSION: ",
-  LATEST_API_VERSION,
-  "----------",
-);
-console.log("---------- Available ApiVersions: ", ApiVersion, "----------");
+// console.log(
+//   "---------- LATEST_API_VERSION: ",
+//   LATEST_API_VERSION,
+//   "----------",
+// );
+// console.log("---------- Available ApiVersions: ", ApiVersion, "----------");
 
 /*
  * Transform appConfig.pricingPlans into an object (pricingPlans) where each key is the plan ID in uppercase,
