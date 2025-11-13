@@ -8,7 +8,6 @@ import {
   ContentIcon,
 } from "@shopify/polaris-icons";
 import { BillingInterval } from "@shopify/shopify-app-remix/server";
-
 const appConfig = {
   // Constants
   IDENTIFIER_PREFIX: "shipready_",
@@ -70,7 +69,7 @@ const appConfig = {
     {
       name: "Pro",
       id: "pro",
-      amount: 19,
+      amount: 49,
       currencyCode: "USD",
       trialDays: 7,
       interval: BillingInterval.Every30Days,
@@ -89,7 +88,7 @@ const appConfig = {
       name: "Premium",
       id: "premium",
       subheader: "Most popular",
-      amount: 49,
+      amount: 149,
       currencyCode: "USD",
       trialDays: 7,
       interval: BillingInterval.Every30Days,
@@ -112,10 +111,10 @@ const appConfig = {
       name: "ultimate",
       id: "ultimate",
       subheader: "Most popular",
-      amount: 99,
+      amount: 2999,
       currencyCode: "USD",
       trialDays: 7,
-      interval: BillingInterval.Every30Days,
+      interval: BillingInterval.Annual,
       description: "For large business",
       cta_label: "Start 7-days trial",
       features: [
@@ -128,7 +127,7 @@ const appConfig = {
         "Custom analytics",
       ],
     }
-    
+
   ],
 };
 

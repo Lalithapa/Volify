@@ -31,11 +31,11 @@ export const Analytics = () => (
       <TotalSales />
     </Layout.Section>
 
-    <Layout.Section>
+    {/* <Layout.Section>
       <Grid columns={{ xs: 1, sm: 1, md: 2, lg: 2, xl: 2 }} gap="400">
         <SalesByChannels />
         <SessionsByDeviceType />
       </Grid>
-    </Layout.Section>
+    </Layout.Section> */}
   </>
 );

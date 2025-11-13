@@ -65,7 +65,7 @@ export const FAQ = () => {
                 Frequently asked questions
               </Text>
               <Text as="p" variant="bodyMd">
-                Find answers to common questions about ShipReady and how it can
+                Find answers to common questions about Store Manager and how it can
                 help you build Shopify apps faster.
               </Text>
 
@@ -74,7 +74,7 @@ export const FAQ = () => {
               </Text>
               <Text as="p" variant="bodyMd">
                 Browse our knowledge base to find detailed guides and tutorials
-                on how to use ShipReady to its full potential.
+                on how to use Store Manager to its full potential.
               </Text>
 
               <Text as="h3" variant="headingMd">
@@ -82,7 +82,7 @@ export const FAQ = () => {
               </Text>
               <Text as="p" variant="bodyMd">
                 If you wish to write us an email instead please use
-                contact@yourapp.com
+                developeragentic@gmail.com
               </Text>
             </BlockStack>
           </Box>
