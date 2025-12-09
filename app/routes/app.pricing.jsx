@@ -84,6 +84,7 @@ async function requestBilling(billing, plan, userShop) {
 }
 
 function isTestMode() {
+  console.log(process.env.TESTMODE);
   return process.env.TESTMODE === "true";
 }
 
