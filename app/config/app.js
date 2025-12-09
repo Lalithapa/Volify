@@ -6,6 +6,7 @@ import {
   QuestionCircleIcon,
   SettingsIcon,
   ContentIcon,
+  DiscountIcon,
 } from "@shopify/polaris-icons";
 import { BillingInterval } from "@shopify/shopify-app-remix/server";
 const appConfig = {
@@ -14,7 +15,7 @@ const appConfig = {
   showSideNavigation: true,
   showTabNavigation: true,
   showTitleBar: false,
-  fullWidthPageLayout: true,
+  fullWidthPageLayout: false,
   requireAppEmbed: true,
   showLegacyPriceBanner: false,
   // Menu data - Add more menu items as needed
@@ -24,6 +25,11 @@ const appConfig = {
       destination: "/app",
       icon: HomeIcon,
       rel: "home",
+    },
+    {
+      label: "Discount",
+      destination: "/app/discount",
+      icon: DiscountIcon,
     },
     {
       label: "Content",

@@ -2,7 +2,7 @@
 
 client_id = "9232ed39bed096d3f2464b83247ebc1e"
 name = "Store Management"
-application_url = "https://engaging-rom-mall-activities.trycloudflare.com"
+application_url = "https://theme-helper.onrender.com"
 embedded = true
 handle = "store-management-helper"
 
@@ -13,19 +13,19 @@ automatically_update_urls_on_dev = true
 api_version = "2025-10"
 
   [[webhooks.subscriptions]]
-  uri = "https://engaging-rom-mall-activities.trycloudflare.com/webhooks/compliance"
+  uri = "https://theme-helper.onrender.com/webhooks/compliance"
   compliance_topics = [ "customers/data_request", "customers/redact", "shop/redact" ]
 
   [[webhooks.subscriptions]]
   topics = [ "app/uninstalled" ]
-  uri = "https://engaging-rom-mall-activities.trycloudflare.com/webhooks/app/uninstalled"
+  uri = "https://theme-helper.onrender.com/webhooks/app/uninstalled"
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
 scopes = "write_draft_orders,write_metaobject_definitions,write_metaobjects,write_price_rules,write_products,write_themes"
 
 [auth]
-redirect_urls = [ "https://engaging-rom-mall-activities.trycloudflare.com/api/auth" ]
+redirect_urls = [ "https://theme-helper.onrender.com/api/auth" ]
 
 [pos]
 embedded = false
